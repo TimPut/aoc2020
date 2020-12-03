@@ -28,5 +28,3 @@ valid' bs = let slotA = pass `B.index` (lb - 1) == c
               of Nothing -> error "Can't parse bounds"
                  Just bounds -> bounds
     c = B.head char
-    
-
