@@ -2,13 +2,17 @@ import qualified Data.Set as S
 
 main = do
     prgm <- fmap (parseInst . words) . lines <$> readFile "./input8.txt" :: IO [Instr]
-    print $ simulate (length prgm) 0 prgm 0 S.empty
+    putStr "Part 1: "
+    print . snd $ simulate (length prgm) 0 prgm 0 S.empty
     let prgms = swap prgm <$> [0..length prgm]
-    print . maximum $ fmap (\p -> simulate (length p) 0 p 0 S.empty) prgms
+    putStr "Part 2: "
+    print . snd . maximum $ fmap (\p -> simulate (length p) 0 p 0 S.empty) prgms
+
 data Instr = Acc Int
            | Jmp Int
            | Nop Int
     deriving (Show, Eq, Ord)
+
 parseInst [inst, num] = let n = (read . filter (/= '+') $ num)
                         in case inst of
                              "acc" -> Acc n
@@ -16,8 +20,8 @@ parseInst [inst, num] = let n = (read . filter (/= '+') $ num)
                              "nop" -> Nop n
                               
 simulate limit state instrs pc history = if pc `S.member` history || pc >= limit
-                                              then (pc,state)
-                                              else simulate limit state' instrs pc' (pc `S.insert` history) -- ((pc,show (instrs !! pc)):tape)
+                                         then (pc,state)
+                                         else simulate limit state' instrs pc' (pc `S.insert` history)
   where
     (state',pc') = case instrs !! pc of
                      Acc n -> (state + n, pc + 1)
