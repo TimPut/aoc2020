@@ -20,8 +20,7 @@ solve (m,pc,lv,sp) = go m pc lv
                         m' = M.insert lv pc m
                     in if pc' == sp
                        then lv
-                       else -- (if pc `mod` 10000 == 0 then traceShow pc else id) $
-                                  go m' pc' lv'
+                       else go m' pc' lv'
 
 solve2 xs sp = do
     v <- V.replicate sp (-1)
